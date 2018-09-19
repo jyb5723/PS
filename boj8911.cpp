@@ -8,7 +8,7 @@
 using namespace std;
 
 int n, m;
-int dx[] = { -1,0,1,0 }, dy[] = { 0,1,0,-1 };   // ºÏ, µ¿ , ³² , ¼­ 
+int dx[] = { -1,0,1,0 }, dy[] = { 0,1,0,-1 };  
 int Cur_d, x, y;    int Up, Down, Left, Right;
 
 int main() {

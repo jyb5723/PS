@@ -26,8 +26,8 @@ int main() {
 	for (int i = 0; i <= 1000; i++)
 		dst[i] = INT;
 
-	dst[1] = 0;  // 슈퍼 컴퓨터 dst
-	pq.push({ 0, 1 });   // edge wgt   ,   node _ number
+	dst[1] = 0;  
+	pq.push({ 0, 1 });   
 	par[1] = 1;
 
 	while (!pq.empty()) {
@@ -48,8 +48,8 @@ int main() {
 			}
 		}
 	}
-	cout << n - 1 << '\n';   // 정점이 n이면 all visited graph size는 n-1이므로 
-	for (int i = 2; i <= n; i++)  // 정점 2부터 차례대로 연결된 그래프를 찾는다. 
+	cout << n - 1 << '\n';   
+	for (int i = 2; i <= n; i++)  
 		cout << par[i] << ' ' << i << '\n';
 	return 0;
 }

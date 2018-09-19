@@ -18,7 +18,7 @@ void clear() {
 			vist[i][j] = 0;
 }
 
-bool Simul() {   // dp -> cc Å½»ö 
+bool Simul() { 
 	if (dp == 0) {         
 		if (cc == -1) { 
 			int nx = Up + dx[dp]; int ny = U_l + dy[dp];
