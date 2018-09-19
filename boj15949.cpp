@@ -1,5 +1,3 @@
-//2018าด 09๊ล 19์ํ Piet [boj15949]
-//Minerba
 #include<iostream>
 #include<queue>
 #include<algorithm>
