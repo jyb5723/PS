@@ -1,7 +1,10 @@
 #include<iostream>
 #include<algorithm>
 #include<queue>
+#include<string.h>
+
 #define N 101
+#define dbg cout << "C8\n";
 
 using namespace std;
 
@@ -13,8 +16,10 @@ int s_x, s_y, ans;
 
 void Clear() {
 	for (int i = 0; i <= 10; i++)
-		v[i].clear(); 
-	ans = 0; 
+		v[i].clear();
+	memset(a, 0, sizeof(a)); 
+	memset(flag, false, sizeof(flag)); 
+	ans = 0;
 	return;
 }
 
@@ -23,21 +28,29 @@ int Pin(int x, int y, int dir) {
 	// ºí·¢È¦ÀÏ°æ¿ì 
 	int Score = 0; bool start = true; bool Worm = true;
 	int nx = x + dx[dir]; int ny = y + dy[dir];
-	while (a[nx][ny] != -1 || (!start && s_x == nx && s_y == ny)) {
-		start = true;
+	while (1) {
+		start = false; 
+		if (!start && nx == x && ny == y) return Score; 
+		if (a[nx][ny] == -1) return Score;
+
+		//cout << nx << ' ' << ny << '\n';
 		if (nx > n || nx < 1 || ny < 1 || ny > n)
 			Score++, dir = (dir + 2) % 4;
 		if (a[nx][ny] >= 1 && a[nx][ny] <= 5) {  // ºí·ÏÀÌ¶ó¸é 
-
-			for (int i = 0; i < 4; i++) {
-				if ((dir + 2) % 4 != i && flag[nx][ny][i]) {
-					dir = i; Score++;
-					break;
+			if (flag[nx][ny][(dir + 2) % 4]) {
+				for (int i = 0; i < 4; i++) {
+					if ((dir + 2) % 4 != i && flag[nx][ny][i]) {
+						dir = i; Score++;
+						break;
+					}
 				}
 			}
-
+			else {
+				dir = (dir + 2) % 4; 
+				Score++; 
+			}
 		}
-		if (a[nx][ny] > 5 && Worm) { // ¿úÈ¦ 
+		else if (a[nx][ny] > 5 && Worm) { // ¿úÈ¦ 
 			int num = a[nx][ny];
 			int Worm_1_x = v[num][0].first;  int Worm_1_y = v[num][0].second;
 			int Worm_2_x = v[num][1].first;  int Worm_2_y = v[num][1].second;
@@ -45,6 +58,11 @@ int Pin(int x, int y, int dir) {
 				nx = Worm_2_x; ny = Worm_2_y;
 				Worm = false;
 				continue;
+			}
+			else {
+				nx = Worm_1_x; ny = Worm_1_y; 
+				Worm = false; 
+				continue; 
 			}
 		}
 		Worm = true;
@@ -58,16 +76,13 @@ int main() {
 	cin.tie(NULL), cout.tie(NULL);
 	cin >> t;
 	for (int tc = 1; tc <= t; tc++) {
-		cin >> n; 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
+		cin >> n;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
 				cin >> a[i][j];
 				if (!a[i][j]) q.push({ i, j });
 
-				if (a[i][j] <= 4 && a[i][j] >= 1) {  // ºí·Ï
-
-					for (int s = 0; s < 4; s++) 
-						flag[i][j][s] = false; 
+				else if (a[i][j] <= 4 && a[i][j] >= 1) {  // ºí·Ï
 
 					if (a[i][j] == 1) {
 						flag[i][j][0] = true; flag[i][j][1] = true;
@@ -86,7 +101,7 @@ int main() {
 						flag[i][j][2] = false; flag[i][j][3] = true;
 					}
 				}
-				if (a[i][j] > 5)
+				else if (a[i][j] > 5)
 					v[a[i][j]].push_back({ i, j });
 			}
 		}
@@ -94,11 +109,13 @@ int main() {
 			int xx = q.front().first; int yy = q.front().second;
 			q.pop();
 			s_x = xx; s_y == yy;
-			for (int i = 0; i < 4; i++)
-				ans = max(Pin(xx, yy, i), ans);
+			for (int i = 0; i < 4; i++) {
+				int sc = Pin(xx, yy, i);
+				ans = max(sc, ans);
+			}
 		}
-		cout << ans << '\n'; 
-		Clear(); 
+		cout << '#' << tc << ' ' << ans << '\n';
+		Clear();
 	}
 	return 0;
 }
