@@ -1,39 +1,31 @@
 #include<iostream>
-#include<algorithm>
-#define V 401
-#define INT 1000000000
-using namespace std;
+#include<string>
+#include<vector>
+using namespace std; 
 
-int v, e, dist[401][401];
+string inp; vector<char> v; 
 
 int main() {
-	cin >> v >> e;
-
-	for (int i = 0; i < v; i++)
-		for (int j = 0; j < v; j++)
-			dist[i][j] = INT;
-
-	for (int i = 0; i < e; i++) {
-		int a, b, c;
-		cin >> a >> b >> c;
-		dist[a - 1][b - 1] = min(dist[a - 1][b - 1], c);
-	}
-
-	for (int k = 0; k < v; k++) {
-		for (int i = 0; i < v; i++) {
-			for (int j = 0; j < v; j++) {
-				dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+	ios::sync_with_stdio(false); 
+	cin.tie(NULL), cout.tie(NULL); 
+	cin >> inp; 
+	for (int i = 0; i < inp.length(); i++) {
+		cout << 1; 
+		if (inp[i] == ')') {
+			while (v.back() != '(') {
+				cout << v.back(); 
+				v.pop_back(); 
 			}
+			v.pop_back(); 
+		}
+		else if (inp[i] == '*' || inp[i] == '/' || inp[i] == '+' || inp[i] == '-' || inp[i] == '(') {  // ¿¬»êÀÚ
+			v.push_back(inp[i]); 
+		}
+		else {
+			cout << inp[i]; 
 		}
 	}
-	int ans = INT;
-	for (int i = 0; i < v; i++)
-		ans = min(ans, dist[i][i]);
 
-	if (ans == INT) {
-		cout << -1;
-		return 0;
-	}
-	cout << ans;
-	return 0;
+
+	return 0; 
 }
