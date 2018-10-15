@@ -1,88 +1,62 @@
 #include<iostream>
-#include<queue>
-#include<string.h>
-#define max(a, b) ((a) > (b))?a:b
-#define N 101
-using namespace std;
+#include<vector>
+#define N 9
+using namespace std; 
 
-struct DATA {
-	int x, y, l, dir;
-}d;
+int n, m, a[N][N], tmp[N][N];  bool Camera[N][N][4];
+int dx[] = {-1,0,1,0}; int dy[] = {0,1,0,-1}; // 상 , 우, 하, 좌 
+vector<pair<int, int>> v;  vector<int> dir;   // 명령어 테이블 
 
-int n, m, k, t, flag[N][N], tmp[N][N], direction[N][N];
-int dx[] = { -1,1,0,0 }, dy[] = { 0,0,-1,1 }; 
-queue<DATA> q; queue<pair<int, int>> chk_q;  
 
-void Search() {
-	int chk[N][N] = { 0, }; 
-	while (!chk_q.empty()) {
-		int x = chk_q.front().first; int y = chk_q.front().second; 
-		chk_q.pop(); 
-		if (!chk[x][y]) {
-			chk[x][y] = true; 
-			q.push({ x, y, tmp[x][y], direction[x][y] }); 
-			tmp[x][y] = 0;  flag[x][y] = 0; direction[x][y] = -1;
+void dfs(int cnt) {
+	if (cnt == v.size()) {
+		for (int i = 0; i < dir.size(); i++) {
+			cout << dir[i] << ' '; 
 		}
+		cout << '\n'; 
+		return; 
 	}
-	return;
-}
-
-void Move() {
-	int sz = q.size();
-	for (int i = 0; i < sz; i++) {
-		int x = q.front().x; int y = q.front().y; int ll = q.front().l; int dir = q.front().dir;
-		q.pop();
-
-		int nx = x + dx[dir]; int ny = y + dy[dir];
-		chk_q.push({ nx, ny }); 
-		if (nx > 0 && nx < n - 1 && ny > 0 && ny < n - 1) {
-			tmp[nx][ny] += ll;  
-			if (flag[nx][ny] < ll) {
-				flag[nx][ny] = ll;
-				direction[nx][ny] = dir;
-			}
-		}
-		else if (!nx || nx == n - 1 || !ny || ny == n - 1) {
-			if (!dir) dir = 1; 
-			else if (dir == 1) dir = 0;
-			else if (dir == 2) dir = 3; 
-			else if (dir == 3) dir = 2; 
-			tmp[nx][ny] = ll / 2;  
-			direction[nx][ny] = dir; 
-		}
+	for (int i = 0; i < 4; i++) {
+		dir.push_back(i); 
+		dfs(cnt + 1); 
+		dir.pop_back(); 
 	}
-	return;
-}
-
-int simul() {
-	int ans = 0; 
-	for (int i = 0; i < m; i++) {
-		Search();
-		Move(); 
-	}
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			if (tmp[i][j]) ans += tmp[i][j], tmp[i][j] = 0; 
-	return ans;
+	return; 
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL), cout.tie(NULL);
-	cin >> t;
-	for (int tc = 1; tc <= t; tc++) {
-		cin >> n >> m >> k;
-		while (k--) {
-			int x, y, n, d;
-			cin >> x >> y >> n >> d; 
-			tmp[x][y] = n; flag[x][y] = n; direction[x][y] = d-1; 
-			chk_q.push({ x, y});
+	ios::sync_with_stdio(false); 
+	cin.tie(NULL), cout.tie(NULL); 
+	cin >> n >> m; 
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> a[i][j];  
+			tmp[i][j] = a[i][j]; 
+			if (a[i][j] != 0 && a[i][j] != 6)
+				v.push_back({ i, j }); 
+			if (a[i][j] == 1) {
+				Camera[i][j][1] = true; 
+			}
+			else if (a[i][j] == 2) {
+				Camera[i][j][1] = true; 
+				Camera[i][j][3] = true; 
+			}
+			else if (a[i][j] == 3) {
+				Camera[i][j][0] = true; 
+				Camera[i][j][1] = true; 
+			}
+			else if (a[i][j] == 4) {
+				Camera[i][j][0] = true; 
+				Camera[i][j][1] = true; 
+				Camera[i][j][3] = true; 
+			}
+			else if (a[i][j] == 5) {
+				for (int r = 0; r < 4; r++) {
+					Camera[i][j][r] = true; 
+				}
+			}
 		}
-		cout << '#' << tc << ' ' << simul() << '\n'; 
-		memset(direction, 0, sizeof(direction)); 
-		memset(tmp, 0, sizeof(tmp)); 
-		memset(flag, 0, sizeof(flag)); 
-		while (!chk_q.empty())chk_q.pop(); 
- 	}
-	return 0;
+	}
+	dfs(0); 
+	return 0; 
 }
