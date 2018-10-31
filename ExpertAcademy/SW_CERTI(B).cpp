@@ -10,17 +10,13 @@ typedef struct {
 
 extern Result query(int guess[]);
 
-int digits_c[10];
-
-static void initialize(int list[]) {
-	for (int count = 0; count < 10; ++count) digits_c[count] = 0;
-	for (int i = 0; i < 4; i++)
-		digits_c[list[i]]++;
-}
 
 Result query1(int guess[], int list[]) {
-	Result result;
+	int digits_c[10] = {0,};
+	for (int i = 0; i < 4; i++)
+		digits_c[guess[i]]++;
 
+	Result result;
 	result.strike = 0;
 	result.ball = 0;
 	for (int idx = 0; idx < N; ++idx)
@@ -63,7 +59,6 @@ void doUserImplementation(int guess[]) {
 				for (int j = 0; j < 4; j++) {
 					guess[j] = list[i][j];
 				}
-				initialize(guess);  
 				k = i; 
 				break; 
 			}
