@@ -2,7 +2,7 @@
 #include<queue>
 #include<vector>
 
-#define N 1001
+#define N 1001     
 #define INT 0x7fffffff
 using namespace std;
 

@@ -10,7 +10,7 @@ bool simul() {
 	int nx = q.front().first+dx[dir]; int ny = q.front().second + dy[dir];
 	if (nx < 1 || nx > n || ny < 1 || ny > n) return false;   // 맵 바깥을 벗어나는 경우 
 	if (map[nx][ny] == 3) {  // 사과가 있는 경우
-		q.push_front({ nx, ny }); 
+		q.push_front({ nx, ny });         
 		map[nx][ny] = 1; 
 		return true; 
 	}
