@@ -10,7 +10,7 @@ int main() {
 	for (int i = 1; i <= m; ++i) {
 		if (c[i] == 'I' && c[i + 1] == 'O' && c[i + 2] == 'I') {
 			++cnt;
-			++i;
+			++i;     
 		}
 		else {
 			if (cnt >= n)ans += cnt - n + 1;

@@ -11,7 +11,7 @@ int B_Search(int x) {
 		int mid = (lft + rgt) >> 1;
 		if (ar[mid] == x)
 			return mid;
-		else if (ar[mid] > x)
+		else if (ar[mid] > x)      
 			rgt = mid - 1;
 		else if (ar[mid] < x)
 			lft = mid + 1;
